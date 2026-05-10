@@ -1,6 +1,6 @@
 ## © Copyright
 
-This project was designed and developed by Lívia Nalanda.
+This project was designed and developed by Auryx - Lívia Nalanda.
 
 All rights reserved.
 
