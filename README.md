@@ -1,3 +1,12 @@
+## © Copyright
+
+This project was designed and developed by Lívia Nalanda.
+
+All rights reserved.
+
+Unauthorized copying, modification, redistribution, or commercial use of this project or its contents is prohibited.
+________________________________________________________________________________________________________________________
+
 # ✨ SGFC — Sistema de Gestão Financeira para Credores
 
 Plataforma moderna de gestão financeira desenvolvida para controle completo de empréstimos, clientes, recebimentos e fluxo de caixa.  
