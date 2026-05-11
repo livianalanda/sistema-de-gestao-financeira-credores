@@ -182,7 +182,8 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 /* ─── MODAL ─── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:400;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:16px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:400;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:16px}
+.modal-overlay.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px;width:min(500px,100%);max-height:90vh;max-height:90dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .modal-title{font-size:16px;font-weight:700}
@@ -206,10 +207,12 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 
 /* ─── LOGIN ─── */
 #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px}
-.login-bg{position:absolute;inset:0;overflow:hidden}
-.login-bg::before{content:'';position:absolute;top:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,.08) 0%,transparent 70%)}
-.login-bg::after{content:'';position:absolute;bottom:-200px;right:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(245,200,66,.06) 0%,transparent 70%)}
-.login-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:36px 28px;width:100%;max-width:400px;position:relative;z-index:1}
+#login-screen.hidden{display:none!important;pointer-events:none!important;visibility:hidden!important}
+#app{display:none}
+.login-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.login-bg::before{content:'';position:absolute;top:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,.08) 0%,transparent 70%);pointer-events:none}
+.login-bg::after{content:'';position:absolute;bottom:-200px;right:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(245,200,66,.06) 0%,transparent 70%);pointer-events:none}
+.login-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:36px 28px;width:100%;max-width:400px;position:relative;z-index:2;touch-action:manipulation}
 .login-logo{text-align:center;margin-bottom:24px}
 .login-logo .logo-mark{width:52px;height:52px;border-radius:14px;font-size:20px;margin:0 auto 12px}
 .login-logo h1{font-size:22px;font-weight:700;margin-bottom:4px}
@@ -275,7 +278,9 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
   border:1px solid var(--border);border-radius:0 0 var(--r) var(--r);
   z-index:350;box-shadow:0 20px 60px rgba(0,0,0,.5);
   max-height:min(80vh,80dvh);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  display:none;
 }
+.notif-panel.open{display:block}
 .notif-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2)}
 .notif-item{padding:14px 18px;border-bottom:1px solid rgba(42,51,80,.5);cursor:pointer;transition:.15s}
 .notif-item:hover,.notif-item:active{background:var(--surface)}
@@ -331,6 +336,10 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .mobile-search-overlay.open{display:flex;flex-direction:column;gap:12px;animation:slideUp .25s ease}
 .mobile-search-overlay .msearch-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;color:var(--text);font-size:16px;min-height:52px}
 .mobile-search-overlay .msearch-results{flex:1;overflow-y:auto}
+
+/* ─── APPLY CLIENT BOX ─── */
+#apply-client-box{display:none}
+#apply-client-box.open{display:block}
 
 /* ─── FAB ─── */
 .fab{
@@ -493,7 +502,7 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
       <label class="form-label">Senha</label>
       <input class="form-input" type="password" placeholder="••••••••" id="login-pass" value="••••••••" autocomplete="current-password"/>
     </div>
-    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;font-size:14px;margin-top:4px;border-radius:var(--r)" onclick="doLogin()">Entrar no Sistema</button>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;font-size:14px;margin-top:4px;border-radius:var(--r);touch-action:manipulation" onclick="doLogin()">Entrar no Sistema</button>
     <div style="display:flex;justify-content:space-between;margin-top:14px">
       <span style="font-size:12px;color:var(--cyan);cursor:pointer">Esqueci minha senha</span>
       <span style="font-size:12px;color:var(--text3);cursor:pointer">Criar conta</span>
@@ -503,7 +512,7 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </div>
 
 <!-- MAIN APP -->
-<div id="app" style="display:none">
+<div id="app" style="">
 
 <!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -567,7 +576,7 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
     <input placeholder="Buscar cliente, contrato..." id="global-search" oninput="globalSearch(this.value)"/>
   </div>
   <!-- Mobile search icon -->
-  <div class="icon-btn" id="mobile-search-btn" onclick="openMobileSearch()" title="Buscar" style="display:none">🔍</div>
+  <div class="icon-btn" id="mobile-search-btn" onclick="openMobileSearch()" title="Buscar" style="">🔍</div>
   <div class="icon-btn" onclick="toggleNotif()" title="Notificações">
     🔔<span class="notif-badge"></span>
   </div>
@@ -613,7 +622,7 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </div>
 
 <!-- NOTIFICATIONS PANEL -->
-<div class="notif-panel" id="notif-panel" style="display:none">
+<div class="notif-panel" id="notif-panel" style="">
   <div class="notif-header">
     <span style="font-weight:600;font-size:14px">Notificações</span>
     <div style="display:flex;gap:10px;align-items:center">
@@ -625,7 +634,7 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </div>
 
 <!-- LOAN MODAL -->
-<div class="modal-overlay" id="loan-modal" style="display:none">
+<div class="modal-overlay" id="loan-modal" style="">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Novo Empréstimo</div>
@@ -641,7 +650,7 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </div>
 
 <!-- CLIENT MODAL -->
-<div class="modal-overlay" id="client-modal" style="display:none">
+<div class="modal-overlay" id="client-modal" style="">
   <div class="modal" style="width:min(680px,100%)">
     <div class="modal-header">
       <div class="modal-title" id="client-modal-title">Detalhes do Cliente</div>
@@ -652,11 +661,11 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </div>
 
 <!-- ADD CLIENT MODAL -->
-<div class="modal-overlay" id="add-client-modal" style="display:none">
+<div class="modal-overlay" id="add-client-modal" style="">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Novo Cliente</div>
-      <div class="modal-close" onclick="document.getElementById('add-client-modal').style.display='none'">✕</div>
+      <div class="modal-close" onclick="document.getElementById('add-client-modal').classList.remove('open')">✕</div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Nome completo</label><input class="form-input" id="nc-name" placeholder="Nome do cliente" autocomplete="name"/></div>
@@ -673,11 +682,11 @@ nav{padding:10px 0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 </div>
 
 <!-- EDIT CLIENT MODAL -->
-<div class="modal-overlay" id="edit-client-modal" style="display:none">
+<div class="modal-overlay" id="edit-client-modal" style="">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Editar Cliente</div>
-      <div class="modal-close" onclick="document.getElementById('edit-client-modal').style.display='none'">✕</div>
+      <div class="modal-close" onclick="document.getElementById('edit-client-modal').classList.remove('open')">✕</div>
     </div>
     <input type="hidden" id="ec-id"/>
     <div class="form-row">
@@ -811,12 +820,25 @@ function navigate(page){
 
 // ─── LOGIN ──────────────────────────────────────────────────────────────────
 function doLogin(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').style.display='flex';
+  const ls=document.getElementById('login-screen');
+  ls.classList.add('hidden');
+  ls.style.display='none';
+  ls.style.pointerEvents='none';
+  const app=document.getElementById('app');
+  app.style.display='flex';
+  app.style.pointerEvents='auto';
   showMobileSearchBtn();
   render();
   setTimeout(renderDashboardCharts,100);
 }
+
+// Allow Enter key to login on mobile keyboard
+document.addEventListener('DOMContentLoaded',function(){
+  ['login-email','login-pass'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doLogin();}});
+  });
+});
 
 // ─── RENDER ROUTER ──────────────────────────────────────────────────────────
 function render(){
@@ -962,7 +984,7 @@ function renderClientes(){
       <span style="color:var(--text3);font-size:13px">🔍</span>
       <input style="background:none;border:none;color:var(--text);font-size:13px;width:100%" placeholder="Buscar..." oninput="filterClientSearch(this.value)"/>
     </div>
-    <button class="btn btn-primary btn-sm" onclick="document.getElementById('add-client-modal').style.display='flex'">+ Cliente</button>
+    <button class="btn btn-primary btn-sm" onclick="document.getElementById('add-client-modal').classList.add('open')">+ Cliente</button>
   </div>
 </div>
 <div id="clients-grid" style="display:flex;flex-direction:column;gap:10px">
@@ -1005,10 +1027,10 @@ function openClientModal(id){
   activeClientId=id;
   profileTab='resumo';
   document.getElementById('client-modal-title').textContent=c.name;
-  document.getElementById('client-modal').style.display='flex';
+  document.getElementById('client-modal').classList.add('open');
   renderClientModal(c);
 }
-function closeClientModal(){document.getElementById('client-modal').style.display='none'}
+function closeClientModal(){document.getElementById('client-modal').classList.remove('open')}
 
 function renderClientModal(c){
   document.getElementById('client-modal-content').innerHTML=`
@@ -1116,7 +1138,7 @@ function openEditClientModal(id){
   document.getElementById('ec-addr').value=c.addr||'';
   document.getElementById('ec-obs').value=c.obs||'';
   document.getElementById('ec-status').value=c.status;
-  document.getElementById('edit-client-modal').style.display='flex';
+  document.getElementById('edit-client-modal').classList.add('open');
   closeClientModal();
 }
 
@@ -1133,7 +1155,7 @@ function saveEditClient(){
   c.addr=document.getElementById('ec-addr').value;
   c.obs=document.getElementById('ec-obs').value;
   c.status=document.getElementById('ec-status').value;
-  document.getElementById('edit-client-modal').style.display='none';
+  document.getElementById('edit-client-modal').classList.remove('open');
   LOGS.unshift({event:`Cliente editado: ${c.name}`,time:new Date().toLocaleString('pt-BR'),type:'ok'});
   renderClientes();
 }
@@ -1209,7 +1231,7 @@ function quickPayment(id){
     c.balance=Math.max(0,c.balance-parseFloat(v));
     TRANSACTIONS.unshift({id:NEXT_TRANS_ID++,desc:`Pagamento: ${c.name}`,cat:'Empréstimo',value:parseFloat(v),type:'in',date:new Date().toLocaleDateString('pt-BR')});
     LOGS.unshift({event:`Pagamento registrado: ${c.name} R$${v}`,time:new Date().toLocaleString('pt-BR'),type:'ok'});
-    if(document.getElementById('client-modal').style.display==='flex') renderClientModal(c);
+    if(document.getElementById('client-modal').classList.contains('open')) renderClientModal(c);
     render();
   }
 }
@@ -1219,7 +1241,7 @@ function addClient(){
   if(!name){alert('Informe o nome do cliente');return}
   const newC={id:NEXT_CLIENT_ID++,name,email:document.getElementById('nc-email').value,tel:document.getElementById('nc-tel').value,doc:document.getElementById('nc-doc').value,addr:document.getElementById('nc-addr').value,obs:document.getElementById('nc-obs').value,status:'active',balance:0,loans:[],payments:[]};
   CLIENTS.push(newC);
-  document.getElementById('add-client-modal').style.display='none';
+  document.getElementById('add-client-modal').classList.remove('open');
   LOGS.unshift({event:`Novo cliente: ${name}`,time:new Date().toLocaleString('pt-BR'),type:'ok'});
   renderClientes();
 }
@@ -1232,10 +1254,10 @@ function openLoanModal(clientId){
   loanStep=0;
   loanData={client:'',value:'',rate:'',rateType:'month',parcelas:'',startDate:new Date().toISOString().split('T')[0],jurosType:'compound'};
   if(clientId){const c=CLIENTS.find(x=>x.id===clientId);if(c)loanData.client=c.name;}
-  document.getElementById('loan-modal').style.display='flex';
+  document.getElementById('loan-modal').classList.add('open');
   renderLoanStep();
 }
-function closeLoanModal(){document.getElementById('loan-modal').style.display='none'}
+function closeLoanModal(){document.getElementById('loan-modal').classList.remove('open')}
 
 function renderLoanStep(){
   const steps=document.getElementById('loan-steps');
@@ -1248,7 +1270,7 @@ function renderLoanStep(){
       <option value="">Escolha um cliente...</option>
       ${CLIENTS.map(c=>`<option value="${c.name}" ${loanData.client===c.name?'selected':''}>${c.name}</option>`).join('')}
     </select></div>
-    <button class="btn btn-ghost btn-sm" style="margin-top:4px" onclick="document.getElementById('loan-modal').style.display='none';document.getElementById('add-client-modal').style.display='flex'">+ Cadastrar novo cliente</button>`,
+    <button class="btn btn-ghost btn-sm" style="margin-top:4px" onclick="document.getElementById('loan-modal').classList.remove('open');document.getElementById('add-client-modal').classList.add('open')">+ Cadastrar novo cliente</button>`,
     `<div class="form-group"><label class="form-label">Valor do empréstimo (R$)</label><input class="form-input" type="number" min="0" step="0.01" placeholder="0,00" value="${loanData.value}" oninput="loanData.value=this.value"/></div>`,
     `<div class="form-row">
       <div class="form-group"><label class="form-label">Taxa de Juros (%)</label><input class="form-input" type="number" step="0.01" min="0" placeholder="0" value="${loanData.rate}" oninput="loanData.rate=this.value"/></div>
@@ -1563,7 +1585,7 @@ function renderCalc(){
       <button class="btn btn-ghost btn-sm btn-icon" onclick="simData={value:1000,rate:3,rateType:'month',period:6,type:'compound'};updateCalc()">🗑️</button>
     </div>
   </div>
-  <div id="apply-client-box" class="card" style="margin-top:12px;display:none">
+  <div id="apply-client-box" class="card" style="margin-top:12px">
     <div style="font-weight:600;font-size:14px;margin-bottom:12px">👤 Aplicar a Cliente</div>
     <div class="form-group">
       <label class="form-label">Selecionar cliente</label>
@@ -1574,7 +1596,7 @@ function renderCalc(){
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="applySimToClient()">✓ Criar Empréstimo</button>
-      <button class="btn btn-ghost" onclick="document.getElementById('apply-client-box').style.display='none'">Cancelar</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('apply-client-box').classList.remove('open')">Cancelar</button>
     </div>
   </div>
 </div>
@@ -1623,13 +1645,13 @@ function renderCalc(){
 
 function updateCalc(){renderCalc()}
 function saveSimulation(){alert(`Simulação salva!\nMontante: R$ ${simData.value}\nJuros: ${simData.rate}% ${simData.rateType==='day'?'ao dia':simData.rateType==='year'?'ao ano':'ao mês'} · ${simData.period} meses`)}
-function showApplyToClient(){const box=document.getElementById('apply-client-box');if(box)box.style.display=box.style.display==='none'?'block':'none'}
+function showApplyToClient(){const box=document.getElementById('apply-client-box');if(box)box.classList.toggle('open')}
 function applySimToClient(){
   const sel=document.getElementById('apply-client-select');
   if(!sel||!sel.value){alert('Selecione um cliente');return}
   const cid=parseInt(sel.value);
   loanData={client:CLIENTS.find(x=>x.id===cid)?.name||'',value:String(simData.value),rate:String(simData.rate),rateType:simData.rateType,parcelas:String(simData.period),startDate:new Date().toISOString().split('T')[0],jurosType:simData.type};
-  document.getElementById('apply-client-box').style.display='none';
+  document.getElementById('apply-client-box').classList.remove('open');
   openLoanModal(cid);
 }
 
@@ -1786,10 +1808,10 @@ function removeUser(id){if(confirm('Remover este usuário?')){const u=USERS.find
 function toggleNotif(){
   notifOpen=!notifOpen;
   const p=document.getElementById('notif-panel');
-  p.style.display=notifOpen?'block':'none';
-  if(notifOpen) renderNotifPanel();
+  if(notifOpen){p.classList.add('open');renderNotifPanel();}
+  else{p.classList.remove('open');}
 }
-function closeNotif(){notifOpen=false;document.getElementById('notif-panel').style.display='none'}
+function closeNotif(){notifOpen=false;document.getElementById('notif-panel').classList.remove('open')}
 function renderNotifPanel(){
   document.getElementById('notif-list').innerHTML=NOTIFICATIONS.map(n=>`
   <div class="notif-item ${n.read?'':'unread'}" style="opacity:${n.read?.7:1}">
